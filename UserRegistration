@@ -2,469 +2,190 @@
 package userregistration;
 
 import java.util.Scanner;
-import java.util.Random;
 import java.util.ArrayList;
-import java.io.FileWriter;
-import java.io.IOException;
 
-
-public class QuickChat 
+public class UserRegistration 
 {
-    String messageID;
-    int messageNumber;
-    String recipient;
-    String message;
-    String messageHash;
-    String messageStatus;
-    
+
     static Scanner input = new Scanner(System.in);
-    static Random random = new Random();
-    
-    //Where the messages are stored
-    static ArrayList<QuickChat> sentMessages = new ArrayList<>();
-    
-    //Keeps track of the amount of messages that are sent
-    static int totalMessages = 0;
-    
-    //Keeps track of the message number
-    static int nextMessageNumber = 1;
-    
-    //QuickChat menu
-    public void startQuickChat()
+    static String surname, name;
+    static String cellphoneNumber = " ";
+    static String password = " ";
+   
+    public static void main(String[] args) 
     {
-      int quickChoice = 0;
-      while(quickChoice != 3)
-       {  
-        System.out.println(" ");
-        System.out.println("==== QUICKCHAT MENU ====");
-        System.out.println("1. Send Message");
-        System.out.println("2. Coming Soon");
-        System.out.println("3. Quit");
-        System.out.println(" ");
-        
-        System.out.print("Please select an option: ");
-        
-        //Make sure the user enters a number
-        while(!input.hasNextInt())
-        {
+     String username;
+     int choice;
+     boolean loginSuccessful = false;
+     
+    Login Object = new Login();
+    
+    System.out.println("==== WELCOME TO QUICKCHAT ====");
+    System.out.println(" ");
+    
+//    System.out.println("1. Sign Up");
+//    System.out.println("2. Login");
+//    System.out.println(" ");    
+//    System.out.print("Which service would you like to access: ");
+//    choice = input.nextInt();
+//    input.nextLine();
+//    
+//    switch(choice)
+//    {
+//    case 1:
+
+    System.out.println(" ");
+    System.out.println("==== Sign Up ====");
+    System.out.println(" ");
+    System.out.print("Name: ");
+    name = input.nextLine();
+  
+    System.out.print("Surname: ");
+    surname = input.nextLine();
+    System.out.println(" ");
+    System.out.println("Please enter a username: ");
+    System.out.println("It must include:");
+    System.out.println("\t - A underscore");
+    System.out.println("\t - No more that 5 characters");
+    username = input.nextLine();
+   
+    
+         if (Object.checkUserName(username))
+         {
+             System.out.println(" ");
+             System.out.println("Username successfully captured");  
+         }
+
+         else
+         {
             System.out.println(" ");
-            System.out.print("Please enter an option: ");
-            input.nextLine();
-            System.out.println("Please select an option");
-        }
+             while(!Object.checkUserName(username))
+               {
+                   System.out.println(" ");
+                   System.out.println("Username is correctly formatted");
+                   System.out.println("Please insure that your username contains: ");
+                   System.out.println("\t - A underscore");
+                   System.out.println("\t - No more that 5 characters");
+                   System.out.println(" ");
+                   System.out.print("Please enter your username again: ");
+                   username = input.nextLine();   
+               } 
+         }
+    
+    if (Login.checkPasswordComplexity(password))
+         {
+             System.out.println(" ");
+             System.out.println("Password successfully captured");  
+         }
+
+         else
+         {
+             System.out.println(" ");
+             while(!Login.checkPasswordComplexity(password))
+               {
+                   //\t = tab
+                   System.out.println(" ");
+                   System.out.println("Please enter your password");
+                   System.out.println("It must include:");
+                   System.out.println("\t - At least eight characters"); 
+                   System.out.println("\t - A capital letter");
+                   System.out.println("\t - A numeric value"); 
+                   System.out.println("\t - A special character");
+                   password = input.nextLine();
+                   System.out.println(" ");
+                   System.out.print("Please enter your password again: ");
+                   password = input.nextLine();   
+               } 
+         }
+    
+    
+    if (Login.checkCellPhoneNumber(cellphoneNumber))
+         {
+             System.out.println(" ");
+             System.out.println("Cellphone number was successfully added");  
+         }
+
+         else
+         {   
+             while(!Login.checkCellPhoneNumber(cellphoneNumber))
+               {
+                   System.out.println(" ");
+                   System.out.println("Cellphone number");
+                   System.out.println("It must include:");
+                   System.out.println("\t - The international code +27");
+                   cellphoneNumber = input.nextLine();
+                   System.out.println(" ");
+                   System.out.print("Please enter your cellphone number again: ");
+                   cellphoneNumber = input.nextLine();   
+               } 
+             
+             System.out.println(" ");
+             System.out.println(Object.registerUser(username, password, name, surname));
+         }
+         
+         System.out.println(" ");
+        System.out.println("Would you like to do anything else?");
+        int loginChoice;
         
-        quickChoice = input.nextInt();
+        System.out.println(" ");
+        System.out.println("1. Login");
+        System.out.println("2. Exit");
+        System.out.println(" ");
+        System.out.print("What would you like to do? ");
+        loginChoice = input.nextInt();
         input.nextLine();
         
-        switch(quickChoice)
-        {
-            case 1:
-                sendMessage();
-                break;
-                
-            case 2:
-                System.out.println("Coming Soon!");
-                break;
-                
-            case 3:
-                System.out.println("Thank you for using QuickChat!");
-                break;
-                
-            default:
-                System.out.println("Invalid option.");
-                break;
-        }
-      }
-    }
-    
-    public void sendMessage()
-    {
-        int numberOfMessages;
-        int count = 0;
-
-        
-        System.out.print("How many messages would you like to send? ");
-                
-        while(!input.hasNextInt())
-        {
-            input.nextLine();
-            System.out.println(" ");
-            System.out.println("Please enter a number");
-            System.out.println("How many messages would you like to send?");
-
-        }
-        
-            numberOfMessages = input.nextInt();
-            input.nextLine();
-        
-            
-            //Number must be greater than 0
-            while(numberOfMessages <= 0)
+            switch(loginChoice)
             {
-                System.out.println(" ");
-                System.out.println("Please enter a number greater than 0");
-                System.out.println("How many messages would you like to send?");
-            
-                while(!input.hasNextInt())
-                {
-                    input.nextLine();
-                    System.out.println("Please enter a number");
-                    System.out.println("How many messages would you like to send? ");
-                } 
-                
-            }
-        
-        //Create each message    
-        while(count < numberOfMessages)
-        {
-            QuickChat newMessage = new QuickChat();
-            
-            System.out.println(" ");
-            System.out.println("==== MESSAGE " + (count + 1) + " ====");
-           
-            //Give the message a number
-            newMessage.messageNumber = nextMessageNumber;
-            nextMessageNumber++;
-            
-            //Generate unique message ID
-            newMessage.checkMessageID();
-            
-            System.out.println(" ");
-            System.out.println("Message ID: " + newMessage.messageID);
-            
-            //Recipient cellphone number
-            System.out.println(" ");
-            System.out.println("Enter recipient cellphone number: ");
-            System.out.println("- It must include the international code +27");
-            
-            newMessage.recipient = input.nextLine();
-            
-            while(!newMessage.checkRecipientCell().equals("Cellphone number is successfully captured"))
-            {
-                System.out.println(" ");
-                System.out.println("Recipient cellphone number is incorrectly formatted.");
-                System.out.println("It must start with +27 and contain the correct number of digits");
-                
-                System.out.println(" ");
-                System.out.println("Please enter the recipient cellphone number again: ");
-                
-                newMessage.recipient = input.nextLine();
-            }
-            
-            System.out.println(" ");
-            System.out.println("The recipient's number has been successfully captured");
-            
-            //Ask the user to enter the message
-            System.out.println(" ");
-            System.out.println("Enter your message: ");
-            newMessage.message = input.nextLine();
-            
-            //Make sure th emessage is no longer than 250 characters
-            while(newMessage.message.length() > 250)
-            {
-                System.out.println(" ");
-                System.out.println(
-                                    "Your message exceeds the 250 character limit by " 
-                                    + (newMessage.message.length() - 250)
-                                    + " characters."
-                                   );
-                System.out.println("Please enter your message again: ");
-                newMessage.message = input.nextLine();
-            
-                System.out.println(" ");
-                System.out.println("Message ready to send.");
-                
-                //Create message hash
-                newMessage.createMessageHash();
-                
-                System.out.println(" ");
-                System.out.println("Message Hash: " + newMessage.messageHash);
-                
-                //Sent/Disregard/Store
-                System.out.println("==== LET'S COMMUNICATE ====");
-                System.out.println(" ");
-                System.out.println("What would you like to do?");
-
-                System.out.println("1. Send Message");
-                System.out.println("2. Disregard Message");
-                System.out.println("3. Store Message");
-                System.out.println(" ");
-                
-                System.out.print("Please select an option: ");
-                
-                while(!input.hasNextInt())
-                {
-                    System.out.println("Please enter a number");
-                    input.nextLine();
-                    System.out.println("Please select an option: ");
-                }
-                
-                int messageChoice = input.nextInt();
-                input.nextLine();
-                
-                
-                switch(messageChoice)
-                {
-                    case 1:
-                        System.out.println(" ");
-                        System.out.println("==== SEND MESSAGE ====");
-                        System.out.println(" ");
-                        
-                        newMessage.messageStatus = "Sent";
-                        sentMessages.add(newMessage);
-                        totalMessages++;
-                        System.out.println(newMessage.SentMessage(input));
-                        count++;
-                        break;
-
-
-                    case 2:
-                        System.out.println(" ");
-                        System.out.println("==== DISREGARD MESSAGE ====");
-                        System.out.println(" ");
-                        
-                        newMessage.messageStatus = "Disregarded";
-                        
-                        System.out.println(" ");
-                        System.out.println("Message disregarded");
-                        count++;
-                        break;
-
-                    case 3:    
-                        System.out.println(" ");
-                        System.out.println("==== STORE MESSAGE ====");
-                        System.out.println(" ");
-                        
-                        System.out.println(newMessage.storeMessage());
-                        count++;
-                        break;
-                        
-                    default:
-                        System.out.println(" ");
-                        System.out.println("Invalid option"); 
-                        System.out.println("Message was not processed");
-                        break;
-                }
-              }
-
-            //After all the messages have been processed
-            System.out.println(" ");
-            System.out.println("You have successfully processsed "
-            + count
-            + " message(s)");
-            
-            System.out.println("Total messages sent: " + returnTotalMessage());
-        }
-    } 
+                case 1:
+                    System.out.println("==== Login in ====");
+                    System.out.println(" ");
+                    
+                    System.out.print("Username: ");
+                    username = input.nextLine();
                   
-    public boolean checkMessageID()
-    {
-       Random random = new Random();
-       boolean unique;
-       
-       do
-       {
-       messageID = "";
-       
-       for(int i = 0; i < 10; i++)
-       {
-           messageID = messageID + random.nextInt(10);
-       }
-       
-       unique = true;
-       
-       //Check whether ID already exists
-       for(int i = 0; i < sentMessages.size(); i++)
-       {
-           if(sentMessages.get(i).messageID.equals(messageID))
-           {
-               unique = false;
-               break;
-           }
-          }
-       }while(!unique);
-       return messageID.length() == 10;
-         
-       }  
+                    System.out.print("Password: ");
+                    password = input.nextLine();
+                    System.out.println(" ");
+                    
 
-    
-    public String checkRecipientCell()
-    {
-        String text;
-        
-        if(recipient != null
-                && recipient.startsWith("+27") 
-                && recipient.length() == 12 
-                && recipient.substring(1).matches("[0-9]+"))
-        {
-           text = "Cellphone number is successfully captured";
-           checkMessageID();
-        }
-        else 
-        {
-           text = "Cellphone number is incorrectly formatted";
-        }  
-        
-        return text;
-    }
-    
-    public String createMessageHash() //JSON file
-    {
-        String trimmedMessage = message.trim();
-        
-        if(trimmedMessage.isEmpty())
-        {
-            messageHash = 
-                    messageID.substring(0,2) 
-                    + ":" 
-                    + messageNumber 
-                    + ":";
-            
-            return messageHash;
-        }
-        
-        String[] words = trimmedMessage.split("\\s+");
-        
-        String firstWord = words[0];
-        String lastWord = words[words.length - 1];
-        
-       messageHash = 
-               messageID.substring(0,2) 
-               + ":" 
-               + messageNumber 
-               + ":" 
-               + firstWord 
-               + lastWord;
-       
-       messageHash = messageHash.toUpperCase();
-       
-       return messageHash;
-    }
-    
-    public String SentMessage(Scanner input)
-    {
-        
-        String messageSent = "Message sent succesfully";
-        
-        return messageSent;
-    }
-    
-    public String printMessages()
-    {
-        
-        StringBuilder output = new StringBuilder();
-        
-        if(sentMessages.isEmpty())
-        {
-            String noMessage;
-            
-            noMessage = "No messages have been sent";
-            
-            return noMessage;
-        }
-        for (int i = 0; i < sentMessages.size(); i++)
-        {
-            if(sentMessages.get(i).messageStatus.equals("Sent"))
-            {
-            output.append("Message ID: ")
-                  .append(sentMessages.get(i).messageID);
-                   
-            output.append("\nMessage Hash: ")
-                  .append(sentMessages.get(i).messageHash);
-            
-            output.append("\nRecipient: ")
-                  .append(sentMessages.get(i).recipient);
-            
-            output.append("\nMessage: ")
-                  .append(sentMessages.get(i).message)
-                  .append("\n\n");
+                    loginSuccessful = Object.loginUser(username, password);
+                    System.out.println(Object.returnLoginStatus(loginSuccessful, surname, name));             
+                    break;
+                    
+                case 2:
+                    System.out.println("==== Goodbye ====");
+                    System.out.println("Thank you for Signing up! We hope to see you next time.");
+                    break;
+                    
+                default:
+                System.out.println("A invalid character was entered");
             }
-        }
         
-        return output.toString();
-    }
-    
-    public int returnTotalMessage()
-    {
-        return totalMessages;
-    }
-    
-    public String storeMessage()
-    {
-        messageStatus = "Stored";
-        
-        //Add message to the ArrayList
-        sentMessages.add(this);
-        
-        //Store messages in JSON file
-        String fileName = "messages.json";
-        
-        try{
-            FileWriter writer = new FileWriter(fileName, true);
-            
-            //Simple 
-        
-            writer.write("{\n");
-            
-            writer.write(" \"messageID\": \""
-            + escapeJson(messageID)
-            + "\",\n"
-            );
-            
-            writer.write(
-            " \"messageHash\": \""
-            + escapeJson(messageHash)
-            + "\",\n"
-            ); 
-            
-            writer.write(
-            " \"recipient\": \""
-            + escapeJson(recipient)
-            + "\",\n"
-            );
-                 
-            writer.write(
-            " \"message\": \""
-            + escapeJson(message)
-            + "\",\n"
-            );
-            
-            writer.write("}\n");
-            writer.close();
-            
-           return "Message stored successfully";
-        
-        }catch(IOException e)
-        {
-            return "Error storing message: " + e.getMessage();
-        }            
-    }
-
-    private String escapeJson(String text)
-    {
-       if(text == null)
-       {
-           return "";
-       } 
-       
-       return text
-               .replace("\\", "\\\\")
-               .replace("\"", "\\\"")
-               .replace("\n", "\\n")
-               .replace("\r", "\\r")
-               .replace("\t", "\\t");
-    }
-    
-}
-
-
-//When user selects:
-//- option number one - Program must ask the user how many messages they want to send (In numeric values. Must be prompted again if anything else is entered again)
-//                    - Each message must be awarded a unique ID for tracking (Must be prompted till the number they asked for is finished)
-//                    - While with a IF statement for the incorrect character limit
-//- option number two -
-
-
-//You have to utilise an arraylist not an array
-
+//    break;
+//    
+//    case 2:
+//    
+//    System.out.println(" ");
+//    System.out.println("==== Login in ====");
+//    
+//    System.out.println(" ");
+//    System.out.print("Username: ");
+//    username = input.nextLine();
+//   
+//    
+//    System.out.print("Password: ");
+//    password = input.nextLine();
+//    System.out.println(" ");
+//    
+//    loginSuccessful = Object.loginUser(username, password);
+//    System.out.println(Object.returnLoginStatus(loginSuccessful, surname, name)); 
 //
+//    System.out.println("==== Goodbye ====");
+//    System.out.println("Thank you for Signing up! We hope to see you next time.");
+//    break;
+//    
+//    default:
+//    System.out.println("A invalid character was entered");Amukel
+  }  
+}
