@@ -81,7 +81,34 @@ public class QuickChat
     {
         int numberOfMessages;
         int count = 0;
-
+        int num = 1;
+        
+        QuickChat newMessage = new QuickChat();
+        
+        //Recipient cellphone number
+            System.out.println(" ");
+            System.out.println("Enter recipient cellphone number: ");
+            System.out.println("- It must include the international code +27");
+            System.out.println(" ");
+            
+            //.trim() removes extra spaces at the beginning and at the end of a String
+            newMessage.recipient = input.nextLine().trim();
+            
+            while(!newMessage.checkRecipientCell().equals("Cellphone number is successfully captured"))
+            {
+                System.out.println(" ");
+                System.out.println("Recipient cellphone number is incorrectly formatted.");
+                System.out.println("It must start with +27 and contain the correct number of digits");
+                
+                System.out.println(" ");
+                System.out.println("Please enter the recipient cellphone number again: ");
+                
+                newMessage.recipient = input.nextLine().trim();
+            }
+            
+            System.out.println(" ");
+            System.out.println("The recipient's number has been successfully captured");
+            
         
         System.out.print("How many messages would you like to send? ");
                 
@@ -112,15 +139,18 @@ public class QuickChat
                     System.out.println("How many messages would you like to send? ");
                 } 
                 
+            numberOfMessages = input.nextInt();
+            input.nextLine();
+            
             }
         
         //Create each message    
         while(count < numberOfMessages)
         {
-            QuickChat newMessage = new QuickChat();
+           // QuickChat newMessage = new QuickChat();
             
             System.out.println(" ");
-            System.out.println("==== MESSAGE " + (count + 1) + " ====");
+            System.out.println("==== MESSAGE " + (num + count) + " ====");
            
             //Give the message a number
             newMessage.messageNumber = nextMessageNumber;
@@ -132,32 +162,16 @@ public class QuickChat
             System.out.println(" ");
             System.out.println("Message ID: " + newMessage.messageID);
             
-            //Recipient cellphone number
-            System.out.println(" ");
-            System.out.println("Enter recipient cellphone number: ");
-            System.out.println("- It must include the international code +27");
-            
-            newMessage.recipient = input.nextLine();
-            
-            while(!newMessage.checkRecipientCell().equals("Cellphone number is successfully captured"))
-            {
-                System.out.println(" ");
-                System.out.println("Recipient cellphone number is incorrectly formatted.");
-                System.out.println("It must start with +27 and contain the correct number of digits");
-                
-                System.out.println(" ");
-                System.out.println("Please enter the recipient cellphone number again: ");
-                
-                newMessage.recipient = input.nextLine();
-            }
-            
-            System.out.println(" ");
-            System.out.println("The recipient's number has been successfully captured");
-            
             //Ask the user to enter the message
             System.out.println(" ");
             System.out.println("Enter your message: ");
             newMessage.message = input.nextLine();
+            
+            
+            
+            
+            //Makes count increment by one
+            count ++;
             
             //Make sure th emessage is no longer than 250 characters
             while(newMessage.message.length() > 250)
@@ -201,8 +215,7 @@ public class QuickChat
                 
                 int messageChoice = input.nextInt();
                 input.nextLine();
-                
-                
+                               
                 switch(messageChoice)
                 {
                     case 1:
